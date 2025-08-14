@@ -19,14 +19,14 @@ public class SearchDTO {
 
 	// 생성자 : 초기값 설정  SearchVo  searchVo = new SearchVo()
 	public SearchDTO() {
-		this.page = 1;
+		this.page       = 1;
 		this.recordSize = 10;
 		this.pageSize   = 10;
 	}
 
-	public int getOffset() {
-		return (page - 1) * recordSize;
+	public int getOffset() {                
+		return (page - 1) * recordSize; // 4페이지면 (recordSize =10 이면) 데이터가 30부터 시작
 	}
-
+ 
      
 }

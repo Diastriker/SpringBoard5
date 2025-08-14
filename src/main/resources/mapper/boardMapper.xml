@@ -9,6 +9,24 @@
   	WHERE MENU_ID = #{menu_id}
  	</select>
  	
+ 	<!-- getBoardPagingList(String menu_id, int offset, int recordSize);
+ 			   menu_id = param1, offset = param2, recodeSize = param3
+ 			   arf0 는 안댐
+ 	 -->
+ 	<select id="getBoardPagingList">
+	SELECT
+		IDX,
+		MENU_ID,
+		TITLE,
+		WRITER,
+		TO_CHAR(REGDATE, 'YYYY-MM-DD') REGDATE,
+		HIT
+	FROM BOARD
+	WHERE MENU_ID = #{ param1 }
+	ORDER BY IDX DESC
+	OFFSET #{ param2 } ROWS FETCH NEXT #{ param3 } ROWS ONLY 
+ 	</select>
+ 	
 </mapper>
 
 
