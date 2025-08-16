@@ -93,7 +93,7 @@ public class BoardPagingController {
 	}
 	
 	@RequestMapping("/BoardPaging/WriteForm")   // menu_id
-	public ModelAndView writeForm(int nowpage, MenuDTO menuDTO) {
+	public ModelAndView writeForm(int nowpage, MenuDTO menuDTO) {	
 		
 		ModelAndView mv = new ModelAndView();
 		
@@ -119,8 +119,36 @@ public class BoardPagingController {
 		mv.setViewName(loc);
 		return mv;
 	}
+	
+	@RequestMapping("/BoardPaging/View") // title
+	public ModelAndView view(BoardDTO boardDTO) {
+		
+		
+		
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("boardpaging/view");
+		return  mv;
+	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
