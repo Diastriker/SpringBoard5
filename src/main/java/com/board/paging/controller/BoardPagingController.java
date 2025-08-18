@@ -1,5 +1,6 @@
 package com.board.paging.controller;
 
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,6 +23,9 @@ public class BoardPagingController {
 	
 	@Autowired
 	private MenuMapper menuMapper;
+	
+	@Autowired
+	private BoardMapper boardMapper;
 	
 	@Autowired
 	private BoardPagingMapper boardPagingMapper;
@@ -104,7 +108,7 @@ public class BoardPagingController {
 		mv.addObject("nowpage", nowpage);
 		mv.addObject("menuDTO", menuDTO);
 		mv.setViewName("boardpaging/write");
-		return mv;
+		return mv;				
 	}
 	
 	@RequestMapping("/BoardPaging/Write")
@@ -119,7 +123,76 @@ public class BoardPagingController {
 		mv.setViewName(loc);
 		return mv;
 	}
-
+	
+	@RequestMapping("/BoardPaging/View") // idx,menu_id ; nowpage
+	public ModelAndView view(int idx, String menu_id, int nowpage) {
+		
+		List<MenuDTO> menuList = menuMapper.getMenuList();
+		
+//		boardDTO = boardPagingMapper.getBoard(boardDTO);
+		MenuDTO menuDTO = menuMapper.getMenuName(menu_id);
+		
+		//해당게시물의 조회수를 증가한다
+		boardPagingMapper.incHit(idx);
+		
+		
+		// 보여줄 게시물의 정보 조회(idx)
+		BoardDTO board = boardPagingMapper.getBoardByIdx(idx);
+		
+		// board Content \n -> <br>
+		String content = board.getContent();
+		content        =content.replace("\n","<br>");
+		board.setContent(content);
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("menuList", menuList);
+		mv.addObject("board", board);
+		mv.addObject("menuDTO",menuDTO);
+		mv.addObject("nowpage",nowpage);
+		mv.setViewName("boardpaging/view");
+		return mv;
+	}
+	
+	@RequestMapping("/BoardPaging/DelView")
+	public ModelAndView delete(int idx, String menu_id, int nowpage) {
+		
+		// 넘어온 idx 로 게시글 삭제
+		boardPagingMapper.deleteBoard(idx);
+		
+		ModelAndView mv = new ModelAndView();
+		String fmt = "redirect:/BoardPaging/List?menu_id={0}&nowpage={1}";
+		String loc = MessageFormat.format(fmt, menu_id, nowpage);
+		mv.setViewName(loc);
+		return mv;
+	}
+	
+	@RequestMapping("BoardPaging/UpdateForm")
+	public ModelAndView  updateForm(int idx, String menu_id, int nowpage) {
+		
+		List<MenuDTO> menuList = menuMapper.getMenuList();
+		
+		MenuDTO menuDTO = menuMapper.getMenuName(menu_id);
+		BoardDTO board = boardPagingMapper.getBoardByIdx(idx);
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("menuDTO", menuDTO);
+		mv.addObject("board", board);
+		mv.addObject("menuList", menuList);
+		mv.addObject("nowpage", nowpage);
+		mv.setViewName("boardpaging/update");
+		return mv;
+	}
+	
+	@RequestMapping("/BoardPaging/Update") // *
+	public ModelAndView update(BoardDTO boardDTO, int nowpage) {
+		
+		boardPagingMapper.updatePagingBoard(boardDTO); 
+		String menu_id = boardDTO.getMenu_id();
+		
+		ModelAndView mv = new ModelAndView(); 
+		mv.setViewName("redirect:/BoardPaging/List?menu_id=" + menu_id + "&nowpage=" + nowpage);
+		return mv;
+	}
 }
 
 

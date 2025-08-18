@@ -8,6 +8,12 @@
  	    FROM MENUS
  	    ORDER BY MENU_SEQ ASC
  	</select>
+ 	
+ 	<select id="getMenuName" resultType="com.board.menus.domain.MenuDTO">
+ 		SELECT MENU_NAME
+ 			FROM MENUS
+ 			WHERE MENU_ID = #{param1}
+ 	</select>
  
   <!-- 메뉴추가 -->
   <insert id="insertMenu">

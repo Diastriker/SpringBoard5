@@ -63,6 +63,7 @@
 	 display: flex;
 	 justify-content: center;
 	 align-items: center;
+	 z-index: 1000;
 }
 
 	.modal {
@@ -82,37 +83,37 @@
 <body>
 	<main>
 
-	<%@include file="/WEB-INF/include/menus.jsp" %>
+	<%@include file="/WEB-INF/include/menuspaging.jsp" %>
 	
-	<h2>${ menuDTO.menu_name } 게시글 내용</h2>
+	<h2>${ menuList[0].menu_name } 게시글 내용</h2>
 	
 		<table id="table">
 			<tr>
 				<td>글번호</td>
-				<td>${ boardList.idx }</td>
+				<td>${ board.idx }</td>
 				<td>조회수</td>
-				<td>${ boardList.hit }</td>
+				<td>${ board.hit }</td>
 			</tr>
 			<tr>
-				<td>작성자</td>
-				<td>${ boardList.writer }</td>
+				<td name="writer">작성자</td>
+				<td>${ board.writer }</td>
 				<td>게시 날짜</td>
-				<td>${ boardList.regdate }</td>
+				<td>${ board.regdate }</td>
 			</tr>
 			<tr>
 				<td>제목</td>
-				<td colspan="3">${ boardList.title }</td>
+				<td colspan="3" name="title">${ board.title }</td>
 			</tr>
 			<tr>
 				<td>내용</td>
-				<td colspan="3">${ boardList.content }</td>
+				<td colspan="3" >${ board.content }</td>
 			</tr>
 			<tr>
 				<td colspan="4">
-				<a href="/Board/WriteForm?menu_id=${ boardList.menu_id }">[새글 쓰기]</a>&nbsp;&nbsp;
-				<a href="/Board/UpdateForm?idx=${ boardList.idx }">[게시글 수정하기]</a>&nbsp;&nbsp;
-				<a href="/Board/DelView?idx=${ boardList.idx }&menu_id=${ boardList.menu_id }" class="delete">[게시글 삭제하기]</a>&nbsp;&nbsp;
-				<a href="/Board/TotalList?menu_id=${ boardList.menu_id }">[목록]</a>&nbsp;&nbsp;
+				<a href="/BoardPaging/WriteForm?menu_id=${ board.menu_id }&nowpage=${nowpage}">[새글 쓰기]</a>&nbsp;&nbsp;
+				<a href="/BoardPaging/UpdateForm?idx=${ board.idx }&menu_id=${ board.menu_id }&nowpage=${nowpage}">[게시글 수정하기]</a>&nbsp;&nbsp;
+				<a href="/BoardPaging/DelView?idx=${ board.idx }&menu_id=${ board.menu_id }&nowpage=${nowpage}" class="delete">[게시글 삭제하기]</a>&nbsp;&nbsp;
+				<a href="/BoardPaging/List?menu_id=${ board.menu_id }&nowpage=${nowpage}" id="goList">[목록]</a>&nbsp;&nbsp;
 				<a href="/">Home</a>
 				</td>
 			</tr>
@@ -121,30 +122,6 @@
 	
 			<script>
 			
-			const goListEl = document.getElementById('goList');
-			goListEl.onclick = function() {
-				location.href='/BoardPaging/List?nowpage=${nowpage}&menu_id=${ menuDTO.menu_id }'
-			}
-			
-			const formEl   = document.querySelectorAll('form')[0];
-			const titleEl  = document.querySelector('[name="title"]');
-			const writerEl = document.querySelector('[name="writer"]');
-			formEl.addEventListener('submit', function(e) {
-				if(titleEl.value == "" ) {
-					alert("제목이 입력되지 않았습니다")
-					titleEl.focus();
-				e.preventDefault();
-				e.stopPropagation();
-				}
-				
-				if(writerEl.value == "" ) {
-					alert("작성자가 입력되지 않았습니다")
-					writerEl.focus();
-					e.preventDefault();
-					e.stopPropagation();
-				}
-				return true;
-			})
 			
 			const delBtns = document.querySelectorAll('.delete');
 			delBtns.forEach(btns => {
@@ -181,6 +158,7 @@
 					modal.appendChild(cancel);
 				})
 			})
+
 		
 		</script>
 </body>
