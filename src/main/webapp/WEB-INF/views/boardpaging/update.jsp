@@ -93,25 +93,21 @@
 	</main>
 	
 	<script>
-				const goListEl = document.getElementById('goList');
-			goListEl.onclick = function() {
-				location.href='/BoardPaging/List?nowpage=${nowpage}&menu_id=${ menuDTO.menu_id }'
-			}
 			
 			const formEl   = document.querySelectorAll('form')[0];
 			const titleEl  = document.querySelector('[name="title"]');
-			const writerEl = document.querySelector('[name="writer"]');
+			const contentEl = document.querySelector('[name="content"]');
 			formEl.addEventListener('submit', function(e) {
 				if(titleEl.value == "" ) {
 					alert("제목이 입력되지 않았습니다")
-					titleEl.focus();
+					titleEl.focus(); // alert 후 커서가 titleEl에 깜빡거림
 				e.preventDefault();
 				e.stopPropagation();
 				}
 				
-				if(writerEl.value == "" ) {
-					alert("작성자가 입력되지 않았습니다")
-					writerEl.focus();
+				if(contentEl.value == "" ) {
+					alert("내용이 입력되지 않았습니다")
+					contentEl.focus();
 					e.preventDefault();
 					e.stopPropagation();
 				}
